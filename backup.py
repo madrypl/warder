@@ -45,8 +45,9 @@ class Backup(object):
         
     def _make_excludes(self):
         excludes = []
-        for p in self._config.exclude.split(';'):
-            excludes += [ '--exclude=' + p ]
+        if self._config.exclude:
+            for p in self._config.exclude.split(';'):
+                excludes += [ '--exclude=' + p ]
         return excludes
         
     def _make_args(self):

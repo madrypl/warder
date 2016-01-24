@@ -2,3 +2,6 @@
 .project
 .pydevproject
 warder.conf
+MANIFEST
+build
+dist
