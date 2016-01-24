@@ -75,10 +75,10 @@ class Backup(object):
     def _store(self):
         if not self._dry_run:
             shutil.move(self._backup_name(), self._backup_archive_name())
-            shutil.move(self._snar_name(), self._snar_archive_name())
+            shutil.copy2(self._snar_name(), self._snar_archive_name())
         else:   
             print "mv " + self._backup_name() + " " + self._backup_archive_name()
-            print "mv " + self._snar_name() + " " + self._snar_archive_name()
+            print "cp " + self._snar_name() + " " + self._snar_archive_name()
     
     def create(self):
         self._timestamp = int(time.time())
