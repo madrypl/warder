@@ -1,6 +1,7 @@
 import os
 import shutil
 import time
+import errno
 from config import Config
 from config import Global
 import subprocess
@@ -64,6 +65,19 @@ class Backup(object):
         args += [ '.' ]
         return args
     
+    def _check_or_make_path(self, path):
+        if not os.path.isdir(path):
+            try:
+                if self._dry_run:
+                    print "mkdir -p " + path
+                else:
+                    os.makedirs(path)
+            except OSError as exc:
+                if exc.errno == errno.EEXIST and os.path.isdir(path):
+                    pass
+                else:
+                    raise
+    
     def _execute_tar(self):
         tar = ['tar']
         tar += self._make_args()
@@ -80,8 +94,14 @@ class Backup(object):
             print "mv " + self._backup_name() + " " + self._backup_archive_name()
             print "cp " + self._snar_name() + " " + self._snar_archive_name()
     
+    def _make_paths(self):
+        self._check_or_make_path(Global.instance().snar_root)
+        self._check_or_make_path(Global.instance().work_root)
+        self._check_or_make_path(self._config.store_root)
+    
     def create(self):
         self._timestamp = int(time.time())
+        self._make_paths()
         self._execute_tar()
         self._store()
             
