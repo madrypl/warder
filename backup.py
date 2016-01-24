@@ -3,7 +3,7 @@ import shutil
 import time
 import errno
 from config import Config
-from config import Global
+from config import ConfigManager
 import subprocess
 
 
@@ -21,7 +21,7 @@ class Backup(object):
             + '.tgz'
             
     def _backup_name(self):
-        return Global.instance().work_root + '/' \
+        return ConfigManager.instance().work_root + '/' \
             + self._config.name \
             + '_' \
             + str(self._timestamp) \
@@ -35,7 +35,7 @@ class Backup(object):
             + '.snar.bkp'
             
     def _snar_name(self):
-        return Global.instance().snar_root + '/' + self._config.name + '.snar'
+        return ConfigManager.instance().snar_root + '/' + self._config.name + '.snar'
     
     def _validate(self):
         if not os.path.isfile(self._snar_name()):
@@ -95,8 +95,8 @@ class Backup(object):
             print "cp " + self._snar_name() + " " + self._snar_archive_name()
     
     def _make_paths(self):
-        self._check_or_make_path(Global.instance().snar_root)
-        self._check_or_make_path(Global.instance().work_root)
+        self._check_or_make_path(ConfigManager.instance().snar_root)
+        self._check_or_make_path(ConfigManager.instance().work_root)
         self._check_or_make_path(self._config.store_root)
     
     def create(self):
