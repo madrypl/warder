@@ -1,5 +1,5 @@
 #!/usr/bin/python
 
-from warderapp import WarderApp
+from warder_app import WarderApp
 
 WarderApp()
